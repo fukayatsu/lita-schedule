@@ -1,6 +1,6 @@
 # Lita::Schedule
 
-TODO: Write a gem description
+Add base class for scheduled job (cron) to Lita
 
 ## Installation
 
@@ -18,7 +18,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+require 'lita-schedule'
+
+module Lita
+  module Schedules
+    class TimeTone < Lita::Schedule
+
+      cron('* * * * * Asia/Tokyo', :every_minutes_job)
+      def every_minutes_job
+        target = Struct.new(:room_jid).new('your_room@conf.hipchat.com')
+        robot.send_message(target, Time.now.to_s)
+      end
+    end
+    Lita.register_schedule(TimeTone)
+  end
+end
+```
+
+cron-fields comes from [jmettraux/rufus-scheduler](https://github.com/jmettraux/rufus-scheduler)
+
 
 ## Contributing
 
