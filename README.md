@@ -1,6 +1,6 @@
 # Lita::Schedule
 
-Add base class for scheduled job (cron) to Lita
+Add base class for scheduled job (cron) to [jimmycuadra/lita](https://github.com/jimmycuadra/lita)
 
 ## Installation
 
