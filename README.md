@@ -27,7 +27,7 @@ module Lita
 
       cron('* * * * * Asia/Tokyo', :every_minutes_job)
       def every_minutes_job
-        target = Struct.new(:room_jid).new('your_room@conf.hipchat.com')
+        target = Struct.new(:room).new('your_room@conf.hipchat.com')
         robot.send_message(target, Time.now.to_s)
       end
     end
