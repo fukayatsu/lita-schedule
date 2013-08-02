@@ -1,4 +1,4 @@
-# Lita::Schedule
+# lita-schedule
 
 Add base class for scheduled job (cron) to [jimmycuadra/lita](https://github.com/jimmycuadra/lita)
 
@@ -23,7 +23,7 @@ require 'lita-schedule'
 
 module Lita
   module Schedules
-    class TimeTone < Lita::Schedule
+    class TimeTone < Schedule
 
       cron('* * * * * Asia/Tokyo', :every_minutes_job)
       def every_minutes_job
