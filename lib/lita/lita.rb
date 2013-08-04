@@ -1,6 +1,38 @@
 require 'rufus/scheduler'
 
 module Lita
+  class Config < Hash
+    class << self
+      def default_config
+        config = new.tap do |c|
+          c.robot = new
+          c.robot.name = "Lita"
+          c.robot.adapter = :shell
+          c.robot.log_level = :info
+          c.robot.admins = nil
+          c.redis = new
+          c.http = new
+          c.http.port = 8080
+          c.http.debug = false
+          c.adapter = new
+          c.handlers = new
+          c.schedules = new # added
+        end
+        load_handler_configs(config)
+        load_schedule_configs(config) # added
+        config
+      end
+
+      def load_schedule_configs(config)
+        Lita.schedules.each do |schedule|
+          next unless schedule.respond_to?(:default_config)
+          schedule_config = config.schedules[schedule.namespace] = new
+          schedule.default_config(schedule_config)
+        end
+      end
+    end
+  end
+
   class << self
     def schedules
       @schedules ||= Set.new
@@ -18,9 +50,7 @@ module Lita
     end
 
     def register_schedules
-      # @scheduler.every '5s' do
-      #   puts "hogehoge"
-      # end
+
       Lita.schedules.each { |schedule|
         schedule.jobs.each { |job|
           @scheduler.cron job.cron_field do
