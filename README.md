@@ -25,8 +25,14 @@ module Lita
   module Schedules
     class TimeTone < Schedule
 
-      cron('* * * * * Asia/Tokyo', :every_minutes_job)
-      def every_minutes_job
+      cron('* * * * * Asia/Tokyo', :every_minutes_job1)
+      def every_minutes_job1
+        target = Struct.new(:room).new('your_room@conf.hipchat.com')
+        robot.send_message(target, Time.now.to_s)
+      end
+
+      every('1m', :every_minutes_job2)
+      def every_minutes_job2
         target = Struct.new(:room).new('your_room@conf.hipchat.com')
         robot.send_message(target, Time.now.to_s)
       end
@@ -36,7 +42,7 @@ module Lita
 end
 ```
 
-cron-fields comes from [jmettraux/rufus-scheduler](https://github.com/jmettraux/rufus-scheduler)
+cron-fields and every-fields come from [jmettraux/rufus-scheduler](https://github.com/jmettraux/rufus-scheduler)
 
 
 ## Contributing
