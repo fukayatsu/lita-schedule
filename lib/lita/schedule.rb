@@ -7,11 +7,15 @@ module Lita
     attr_reader :redis
     attr_reader :robot
 
-    Job = Struct.new('Job', :cron_field, :job_name)
+    Job = Struct.new('Job', :type, :field, :job_name)
 
     class << self
-      def cron(cron_field, job_name)
-        jobs << Job.new(cron_field, job_name)
+      def cron(field, job_name)
+        jobs << Job.new(:cron, field, job_name)
+      end
+
+      def every(field, job_name)
+        jobs << Job.new(:cycle, field, job_name)
       end
 
       def jobs
@@ -22,7 +26,7 @@ module Lita
         if name
           Util.underscore(name.split("::").last)
         else
-          raise "Handlers that are anonymous classes must define self.name."
+          raise "Schedules that are anonymous classes must define self.name."
         end
       end
     end

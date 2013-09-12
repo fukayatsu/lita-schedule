@@ -53,8 +53,15 @@ module Lita
 
       Lita.schedules.each { |schedule|
         schedule.jobs.each { |job|
-          @scheduler.cron job.cron_field do
-            schedule.new(self).send job.job_name
+          case job.type
+          when :cron
+            @scheduler.cron job.field do
+              schedule.new(self).send job.job_name
+            end
+          when :cycle
+            @scheduler.every job.field do
+              schedule.new(self).send job.job_name
+            end
           end
         }
       }
