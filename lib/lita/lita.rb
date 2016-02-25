@@ -44,7 +44,7 @@ module Lita
   end
 
   module ScheduleRobot
-    def initialize
+    def initialize(registry = Lita)
       @scheduler = Rufus::Scheduler.start_new
       super
     end
